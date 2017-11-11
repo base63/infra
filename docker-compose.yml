@@ -1,0 +1,28 @@
+version: '2'
+services:
+  postgres:
+    container_name: base63-postgres
+    image: postgres
+    ports:
+     - 10000:5432
+    environment:
+     - POSTGRES_USER=base63
+     - POSTGRES_PASSWORD=base63
+     - POSTGRES_DB=base63
+  identity:
+    container_name: base63-identity
+    image: base63-identity
+    build:
+      context: ../identity
+      args:
+       - GEMFURY_USER
+       - GEMFURY_API_KEY
+    ports:
+     - 10001:10000
+    links:
+     - postgres
+    volumes:
+     - ../identity/src:/base63/src
+     - ../identity/migrations:/base63/migrations
+     - ../identity/node_modules:/base63/node_modules     
+     - ../identity/secrets.json:/base63/var/secrets.json

@@ -25,4 +25,24 @@ git diff
 git diff origin/master master
 cd ..
 
+cd content
+git diff
+git diff origin/master master
+cd ..
+
+cd content-sdk-js
+git diff
+git diff origin/master master
+cd ..
+
+cd base63fe
+git diff
+git diff origin/master master
+cd ..
+
+cd blogfe
+git diff
+git diff origin/master master
+cd ..
+
 cd infra

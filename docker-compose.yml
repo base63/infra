@@ -1,5 +1,14 @@
 version: '2'
 services:
+  postgres-test:
+    container_name: base63-postgres-test
+    image: postgres
+    ports:
+     - 20000:5432
+    environment:
+     - POSTGRES_USER=base63
+     - POSTGRES_PASSWORD=base63
+     - POSTGRES_DB=base63
   postgres:
     container_name: base63-postgres
     image: postgres
@@ -24,5 +33,59 @@ services:
     volumes:
      - ../identity/src:/base63/src
      - ../identity/migrations:/base63/migrations
-     - ../identity/node_modules:/base63/node_modules     
-     - ../identity/secrets.json:/base63/var/secrets.json
+     - ../identity/node_modules:/base63/node_modules
+     - ../identity/.env:/base63/.env
+  content:
+    container_name: base63-content
+    image: base63-content
+    build:
+      context: ../content
+      args:
+       - GEMFURY_USER
+       - GEMFURY_API_KEY
+    ports:
+     - 10002:10000
+    links:
+     - postgres
+     - identity
+    volumes:
+     - ../content/src:/base63/src
+     - ../content/migrations:/base63/migrations
+     - ../content/node_modules:/base63/node_modules
+     - ../content/.env:/base63/.env
+  base63fe:
+    container_name: base63-base63fe
+    image: base63-base63fe
+    build:
+      context: ../base63fe
+      args:
+       - GEMFURY_USER
+       - GEMFURY_API_KEY
+    ports:
+     - 10003:10000
+    links:
+     - identity
+     - content
+    volumes:
+     - ../base63fe/src:/base63/src
+     - ../base63fe/migrations:/base63/migrations
+     - ../base63fe/node_modules:/base63/node_modules
+     - ../base63fe/.env:/base63/.env
+  blogfe:
+    container_name: base63-blogfe
+    image: base63-blogfe
+    build:
+      context: ../blogfe
+      args:
+       - GEMFURY_USER
+       - GEMFURY_API_KEY
+    ports:
+     - 10004:10000
+    links:
+     - identity
+     - content
+    volumes:
+     - ../blogfe/src:/base63/src
+     - ../blogfe/migrations:/base63/migrations
+     - ../blogfe/node_modules:/base63/node_modules
+     - ../blogfe/.env:/base63/.env

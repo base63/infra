@@ -23,9 +23,6 @@ services:
     image: base63-identity
     build:
       context: ../identity
-      args:
-       - GEMFURY_USER
-       - GEMFURY_API_KEY
     ports:
      - 10001:10000
     links:
@@ -40,9 +37,6 @@ services:
     image: base63-content
     build:
       context: ../content
-      args:
-       - GEMFURY_USER
-       - GEMFURY_API_KEY
     ports:
      - 10002:10000
     links:
@@ -58,9 +52,6 @@ services:
     image: base63-base63fe
     build:
       context: ../base63fe
-      args:
-       - GEMFURY_USER
-       - GEMFURY_API_KEY
     ports:
      - 10003:10000
     links:
@@ -76,9 +67,6 @@ services:
     image: base63-blogfe
     build:
       context: ../blogfe
-      args:
-       - GEMFURY_USER
-       - GEMFURY_API_KEY
     ports:
      - 10004:10000
     links:
